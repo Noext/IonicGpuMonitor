@@ -6,67 +6,46 @@ import {GlobalService} from '../global-service/global-service';
 @Injectable()
 export class JsonWebsocket {
     host;
-    queue;
     password;
     username;
     port;
     socket;
-    salt;
+    connected;
 
     constructor(public global: GlobalService) {
         let opts = global.opts || {};
-        this.host = opts.hostname || '192.168.1.2';
-        this.port = 8080;
-        this.username = opts.username || 'admin';
-        this.password = opts.password || 'changeme';
-        this.queue = [];
-        this.salt = opts.salt || "";
+        this.host = opts.hostname;
+        this.port = opts.port;
+        this.username = opts.username;
+        this.password = opts.password;
+        this.connected = false;
+
     }
 
 
     connect(callback) {
-        this.socket = new WebSocket(`ws://${ this.host }:${ this.port }/Stats`);
+        var self = this;
+        let opts = this.global.opts ;
+        this.host = opts.hostname ;
+        this.port = opts.port;
+        this.username = opts.username ;
+        this.password = opts.password ;
 
-        this.socket.onopen = () => {
-            if (this.queue.length > 0) {
-                let item: any = null;
-                for (item of Array.from(this.queue)) {
-                    // @handlers[item.tag] = item.callback
 
-                    this.send(item.line, 'call');
-                }
-                this.queue = [];
+        if(this.host != null && this.port != null){
+
+            this.socket = new WebSocket(`ws://${ this.host }:${ this.port }/Stats`);
+            this.socket.onopen = () => {
+                self.connected = true;
                 return callback();
-            }
-            return callback();
-        };
-
-        this.socket.onerror = function (e) {
-            throw e;
-        };
-
-    }
-
-    format(action, args?, tag?) {
-        let tmp =
-            {
-                "name": action,
-                "username": this.username,
-                "arguments": args || [],
-                "tag": tag || ""
             };
 
-        return encodeURIComponent(JSON.stringify(tmp));
-    }
-
-    send(data, type, args?, tag?) {
-        data = this.format(data, args, tag);
-        if (this.socket.readyState === WebSocket.OPEN) {
-            return this.socket.send("/api/2/" + type + "?json=" + data);
-        } else {
-            return this.queue.push({line: data});
+            this.socket.onerror = function (e) {
+                console.log("error");
+                throw e;
+            };
         }
+
+
     }
-
-
 }

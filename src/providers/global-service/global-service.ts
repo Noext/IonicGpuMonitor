@@ -7,8 +7,8 @@ export class GlobalService {
     private storage: Storage;
 
     public opts: any = {
-        hostname: "192.168.1.2",
-        port: 8080,
+        hostname: null,
+        port: null,
         username: null,
         password: null,
         onConnection: function (err, jsonapi) {
@@ -17,7 +17,7 @@ export class GlobalService {
 
     constructor() {
         let self = this;
-       /* this.storage = new Storage(localStorage);
+        this.storage = new Storage(localStorage);
         this.storage.get('hostname').then(function (hostname) {
             self.opts.hostname = hostname;
         });
@@ -26,13 +26,15 @@ export class GlobalService {
         });
         this.storage.get('password').then(function (password) {
             self.opts.password = password;
-        });*/
+        });
+        this.storage.get('port').then(function (port) {
+            self.opts.port = port;
+        });
     }
 
     saveOpts() {
         this.storage.set('hostname', this.opts.hostname);
-        this.storage.set('username', this.opts.username);
-        this.storage.set('password', this.opts.password);
+        this.storage.set('port', this.opts.port);
     }
 
 

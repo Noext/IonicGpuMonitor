@@ -48,7 +48,7 @@ export class GraphComponent {
                     yAxes: [
                         {
                             gridLines: {
-                                color: '#999999',
+                                color: '#181818',
                                 lineWidth: 0.5
                             },
                             id: 'B',
@@ -74,8 +74,8 @@ export class GraphComponent {
                         label: self.graphName,
                         fill: false,
                         lineTension: 0,
-                        backgroundColor: "#00f2ff",
-                        borderColor: "#00f2ff",
+                        backgroundColor: "#1C4E7C",
+                        borderColor: "#1C4E7C",
                         borderCapStyle: 'butt',
                         borderDash: [],
                         borderDashOffset: 0.0,
@@ -89,7 +89,7 @@ export class GraphComponent {
                         pointHoverBorderWidth: 0,
                         pointRadius: 0,
                         pointHitRadius: 0,
-                        borderWidth: 0.4,
+                        borderWidth: 1,
                         data: [],
                         spanGaps: false,
                     }
